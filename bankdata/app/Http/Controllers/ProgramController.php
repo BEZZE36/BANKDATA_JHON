@@ -105,7 +105,7 @@ class ProgramController extends Controller
                 ->log("Mengubah program {$program->nama_program}");
         });
 
-        return redirect()->route('program.index')->with('sukses', 'Data program berhasil diperbarui.');
+        return redirect()->route('folder.index', ['modul' => 'program', 'folder' => $program->folder_id])->with('sukses', 'Data program berhasil diperbarui.');
     }
 
     public function destroy(Request $request, Program $program)
@@ -120,5 +120,17 @@ class ProgramController extends Controller
 
         return redirect()->route('folder.index', ['modul' => 'program', 'folder' => $folderId])
                 ->with('sukses', 'Data program berhasil dihapus.');
+    }
+
+    /**
+     * Cetak laporan realisasi program dalam bentuk PDF (tombol "Cetak PDF" di halaman detail).
+     */
+    public function cetakPdf(Program $program)
+    {
+        $program->load('transaksiKeuangan');
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('program.pdf', compact('program'));
+
+        return $pdf->download('laporan-program-' . $program->kode_program . '.pdf');
     }
 }

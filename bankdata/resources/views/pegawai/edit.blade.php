@@ -49,7 +49,7 @@
         </div>
         <div class="flex gap-3 pt-2">
             <button class="px-5 py-2.5 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700">Simpan Perubahan</button>
-            <a href="{{ route('pegawai.index') }}" class="px-5 py-2.5 bg-slate-100 rounded-lg font-medium hover:bg-slate-200">Batal</a>
+            <a href="{{ route('folder.index', ['modul' => 'kepegawaian', 'folder' => $pegawai->folder_id]) }}" class="px-5 py-2.5 bg-slate-100 rounded-lg font-medium hover:bg-slate-200">Batal</a>
         </div>
     </form>
 </div>

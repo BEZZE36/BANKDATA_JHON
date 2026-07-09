@@ -108,7 +108,7 @@ class KeuanganController extends Controller
                 ->log("Mengubah transaksi keuangan {$keuangan->no_transaksi}");
         });
 
-        return redirect()->route('keuangan.index')->with('sukses', 'Transaksi berhasil diperbarui.');
+        return redirect()->route('folder.index', ['modul' => 'keuangan', 'folder' => $keuangan->folder_id])->with('sukses', 'Transaksi berhasil diperbarui.');
     }
 
     public function destroy(Request $request, Keuangan $keuangan)

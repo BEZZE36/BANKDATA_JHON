@@ -104,7 +104,7 @@ class AsetController extends Controller
                 ->log("Mengubah aset {$aset->nama_aset}");
         });
 
-        return redirect()->route('aset.index')->with('sukses', 'Data aset berhasil diperbarui.');
+        return redirect()->route('folder.index', ['modul' => 'aset', 'folder' => $aset->folder_id])->with('sukses', 'Data aset berhasil diperbarui.');
     }
 
     public function destroy(Request $request, Aset $aset)

@@ -29,14 +29,19 @@
             <p class="text-sm font-medium mb-2">Dokumen Pendukung</p>
             <ul class="space-y-1 text-sm">
                 @foreach ($aset->attachments as $a)
-                    <li><i class="fa-solid fa-paperclip mr-1 text-slate-400"></i> {{ $a->original_name }}</li>
+                    <li class="flex items-center gap-2">
+                        <i class="fa-solid fa-paperclip text-slate-400"></i>
+                        <span class="flex-1">{{ $a->original_name }}</span>
+                        <a href="{{ route('attachment.preview', $a) }}" target="_blank" class="text-blue-600 hover:underline text-xs"><i class="fa-solid fa-eye"></i> Lihat</a>
+                        <a href="{{ route('attachment.download', $a) }}" class="text-slate-500 hover:underline text-xs"><i class="fa-solid fa-download"></i> Unduh</a>
+                    </li>
                 @endforeach
             </ul>
         </div>
         @endif
 
         <div class="pt-4 border-t flex gap-2">
-            <a href="{{ route('aset.index') }}" class="px-5 py-2.5 bg-slate-100 rounded-lg font-medium hover:bg-slate-200 text-sm hover:-translate-y-0.5 transition-transform">Kembali</a>
+            <a href="{{ route('folder.index', ['modul' => 'aset', 'folder' => $aset->folder_id]) }}" class="px-5 py-2.5 bg-slate-100 rounded-lg font-medium hover:bg-slate-200 text-sm hover:-translate-y-0.5 transition-transform">Kembali</a>
         </div>
     </div>
 

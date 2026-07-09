@@ -60,6 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('pegawai', PegawaiController::class);
     Route::resource('program', ProgramController::class);
+    Route::get('/program/{program}/pdf', [ProgramController::class, 'cetakPdf'])->name('program.pdf');
     Route::resource('aset', AsetController::class);
     Route::resource('keuangan', KeuanganController::class);
 });
