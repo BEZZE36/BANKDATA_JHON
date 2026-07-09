@@ -82,5 +82,64 @@
         </main>
     </div>
 </div>
+
+<!-- Modal Preview File (dipakai di halaman folder & halaman detail semua modul) -->
+<div id="modal-preview-lampiran" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
+    <div class="absolute top-4 right-4 flex gap-2 z-10" id="btn-zoom-group">
+        <button onclick="zoomPreview(-0.2)" class="w-9 h-9 bg-white/90 rounded-lg hover:bg-white text-slate-700 font-bold">-</button>
+        <button onclick="resetZoomPreview()" class="px-3 h-9 bg-white/90 rounded-lg hover:bg-white text-slate-700 text-xs font-medium">Reset</button>
+        <button onclick="zoomPreview(0.2)" class="w-9 h-9 bg-white/90 rounded-lg hover:bg-white text-slate-700 font-bold">+</button>
+    </div>
+    <button onclick="tutupPreview()" class="absolute top-4 left-4 w-9 h-9 bg-white/90 rounded-lg hover:bg-white text-slate-700 z-10">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div id="preview-content-wrap" class="w-full h-full flex items-center justify-center overflow-auto p-16" onclick="if(event.target === this) tutupPreview()"></div>
+</div>
+
+<script>
+let previewZoomLevel = 1;
+
+function bukaPreviewLampiran(url, mime) {
+    const wrap = document.getElementById('preview-content-wrap');
+    const zoomGroup = document.getElementById('btn-zoom-group');
+    previewZoomLevel = 1;
+
+    const adalahGambar = mime === 'image/jpeg' || mime === 'image/png';
+
+    if (adalahGambar) {
+        wrap.innerHTML = `<img id="preview-img" src="${url}" style="transform: scale(1); transition: transform .15s ease; max-width: 90vw; max-height: 85vh;">`;
+        zoomGroup.classList.remove('hidden');
+    } else {
+        // PDF & dokumen Word/Excel sudah punya kontrol zoom bawaan dari viewer-nya sendiri
+        wrap.innerHTML = `<iframe src="${url}" class="bg-white rounded-lg shadow-2xl" style="width: 90vw; height: 85vh; border: none;"></iframe>`;
+        zoomGroup.classList.add('hidden');
+    }
+
+    document.getElementById('modal-preview-lampiran').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function zoomPreview(delta) {
+    previewZoomLevel = Math.min(4, Math.max(0.2, previewZoomLevel + delta));
+    const img = document.getElementById('preview-img');
+    if (img) img.style.transform = `scale(${previewZoomLevel})`;
+}
+
+function resetZoomPreview() {
+    previewZoomLevel = 1;
+    const img = document.getElementById('preview-img');
+    if (img) img.style.transform = 'scale(1)';
+}
+
+function tutupPreview() {
+    document.getElementById('modal-preview-lampiran').classList.add('hidden');
+    document.getElementById('preview-content-wrap').innerHTML = '';
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') tutupPreview();
+});
+</script>
 </body>
 </html>

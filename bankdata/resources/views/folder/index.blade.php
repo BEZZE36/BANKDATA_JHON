@@ -7,6 +7,7 @@
     $rutePembuatan = ['kepegawaian' => 'pegawai.create', 'program' => 'program.create', 'aset' => 'aset.create', 'keuangan' => 'keuangan.create'][$modul];
     $ruteLihat = ['kepegawaian' => 'pegawai.show', 'program' => 'program.show', 'aset' => 'aset.show', 'keuangan' => 'keuangan.show'][$modul];
     $ruteUbah = ['kepegawaian' => 'pegawai.edit', 'program' => 'program.edit', 'aset' => 'aset.edit', 'keuangan' => 'keuangan.edit'][$modul];
+    $ruteIndexLama = ['kepegawaian' => 'pegawai.index', 'program' => 'program.index', 'aset' => 'aset.index', 'keuangan' => 'keuangan.index'][$modul];
     $prefixHapusItem = ['kepegawaian' => '/pegawai/', 'program' => '/program/', 'aset' => '/aset/', 'keuangan' => '/keuangan/'][$modul];
 @endphp
 
@@ -18,6 +19,9 @@
         <a href="{{ route('folder.index', ['modul' => $modul, 'folder' => $node->id]) }}"
            class="hover:text-emerald-600 {{ $loop->last ? 'text-slate-900 font-medium' : '' }}">{{ $node->nama }}</a>
     @endforeach
+    <a href="{{ route($ruteIndexLama) }}" class="ml-auto text-emerald-600 hover:underline flex items-center gap-1">
+        <i class="fa-solid fa-magnifying-glass text-xs"></i> Lihat Semua &amp; Cari
+    </a>
 </div>
 
 <!-- Toolbar: satu tombol utama + menu titik tiga untuk aksi jarang dipakai -->
@@ -157,6 +161,7 @@
                     <span class="inline-block text-[10px] font-semibold uppercase tracking-wide text-slate-500 bg-slate-100 rounded px-1.5 py-0.5">File</span>
                 </div>
                 <a href="{{ route('attachment.preview', $lampiran) }}" target="_blank"
+                   onclick="event.preventDefault(); bukaPreviewLampiran('{{ route('attachment.preview', $lampiran) }}', '{{ $lampiran->mime_type }}')"
                    class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition bg-white/80 rounded-lg"
                    title="Lihat file">
                     <i class="fa-solid fa-eye text-2xl text-slate-700"></i>

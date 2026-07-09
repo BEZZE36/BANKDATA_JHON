@@ -17,7 +17,10 @@ class AddSecurityHeaders
     {
         $response = $next($request);
 
-        $response->headers->set('X-Frame-Options', 'DENY');
+        // SAMEORIGIN (bukan DENY) supaya fitur preview file di halaman yang sama
+        // (pakai <iframe>) tetap bisa jalan, tapi tetap ditolak kalau di-embed
+        // dari situs lain (perlindungan clickjacking tetap aktif).
+        $response->headers->set('X-Frame-Options', 'SAMEORIGIN');
         $response->headers->set('X-Content-Type-Options', 'nosniff');
         $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
         $response->headers->set('X-XSS-Protection', '1; mode=block');

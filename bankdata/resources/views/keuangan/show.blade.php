@@ -51,7 +51,7 @@
                     <li class="flex items-center gap-2">
                         <i class="fa-solid fa-paperclip text-slate-400"></i>
                         <span class="flex-1">{{ $a->original_name }}</span>
-                        <a href="{{ route('attachment.preview', $a) }}" target="_blank" class="text-blue-600 hover:underline text-xs"><i class="fa-solid fa-eye"></i> Lihat</a>
+                        <a href="{{ route('attachment.preview', $a) }}" onclick="event.preventDefault(); bukaPreviewLampiran('{{ route('attachment.preview', $a) }}', '{{ $a->mime_type }}')" class="text-blue-600 hover:underline text-xs cursor-pointer"><i class="fa-solid fa-eye"></i> Lihat</a>
                         <a href="{{ route('attachment.download', $a) }}" class="text-slate-500 hover:underline text-xs"><i class="fa-solid fa-download"></i> Unduh</a>
                     </li>
                 @endforeach
