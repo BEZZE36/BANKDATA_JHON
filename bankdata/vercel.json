@@ -1,15 +1,21 @@
 {
   "version": 2,
+  "framework": null,
+  "buildCommand": "composer install --no-dev --optimize-autoloader && php artisan config:cache && php artisan route:cache && php artisan view:cache",
   "functions": {
-    "api/index.php": {
-      "runtime": "vercel-php@0.7.2",
-      "regions": ["iad1"]
+    "api/*.php": {
+      "runtime": "vercel-php@0.9.0",
+      "maxDuration": 30
     }
   },
   "routes": [
     {
       "src": "/build/(.*)",
       "dest": "/public/build/$1"
+    },
+    {
+      "src": "/storage/(.*)",
+      "dest": "/public/storage/$1"
     },
     {
       "src": "/css/(.*)",
@@ -22,6 +28,10 @@
     {
       "src": "/images/(.*)",
       "dest": "/public/images/$1"
+    },
+    {
+      "src": "/fonts/(.*)",
+      "dest": "/public/fonts/$1"
     },
     {
       "src": "/favicon.ico",
