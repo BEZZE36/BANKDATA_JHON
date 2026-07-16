@@ -54,7 +54,12 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
+            // FIX: \Pdo\Mysql class only exists on PHP 8.4+. On PHP 8.2/8.3
+            // runtimes (like Vercel's vercel-php@0.7.2), extension_loaded('pdo_mysql')
+            // can return true while the \Pdo\Mysql class itself doesn't exist yet,
+            // causing a fatal "Class Pdo\Mysql not found" error just from loading
+            // this config file. We guard with class_exists() as well.
+            'options' => (extension_loaded('pdo_mysql') && class_exists('Pdo\Mysql')) ? array_filter([
                 \Pdo\Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
@@ -74,7 +79,8 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
+            // FIX: same guard as the mysql connection above.
+            'options' => (extension_loaded('pdo_mysql') && class_exists('Pdo\Mysql')) ? array_filter([
                 \Pdo\Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
