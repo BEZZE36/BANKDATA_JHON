@@ -29,5 +29,24 @@ putenv('VIEW_COMPILED_PATH=/tmp/storage/framework/views');
 $_ENV['VIEW_COMPILED_PATH'] = '/tmp/storage/framework/views';
 $_SERVER['VIEW_COMPILED_PATH'] = '/tmp/storage/framework/views';
 
-// 4. Forward request to Laravel
+// 4. Redirect Laravel's internal bootstrap cache files (packages, services,
+//    config, events, routes) to /tmp. Without this, Laravel's PackageManifest
+//    tries to write to the read-only bootstrap/cache directory during boot,
+//    which crashes the app BEFORE service providers (like ViewServiceProvider)
+//    are registered — this is what causes "Target class [view] does not exist".
+$bootstrapCacheEnv = [
+    'APP_PACKAGES_CACHE' => '/tmp/bootstrap/cache/packages.php',
+    'APP_SERVICES_CACHE' => '/tmp/bootstrap/cache/services.php',
+    'APP_CONFIG_CACHE' => '/tmp/bootstrap/cache/config.php',
+    'APP_EVENTS_CACHE' => '/tmp/bootstrap/cache/events.php',
+    'APP_ROUTES_CACHE' => '/tmp/bootstrap/cache/routes-v7.php',
+    'APP_SCHEDULE_CACHE' => '/tmp/bootstrap/cache/schedule-v7.php',
+];
+foreach ($bootstrapCacheEnv as $key => $value) {
+    putenv("{$key}={$value}");
+    $_ENV[$key] = $value;
+    $_SERVER[$key] = $value;
+}
+
+// 5. Forward request to Laravel
 require __DIR__ . '/../public/index.php';
