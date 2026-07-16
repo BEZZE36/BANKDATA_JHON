@@ -2,15 +2,9 @@
     "name": "bank-data",
     "private": true,
     "scripts": {
-        "dev": "vite",
-        "build": "vite build"
+        "build": "echo 'No frontend build required for this PHP project'"
     },
     "engines": {
-        "node": "20.x"
-    },
-    "devDependencies": {
-        "axios": "^1.6.4",
-        "laravel-vite-plugin": "^1.0",
-        "vite": "^5.0"
+        "node": "24.x"
     }
 }
