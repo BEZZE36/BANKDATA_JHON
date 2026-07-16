@@ -8,7 +8,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 // Override storage path to /tmp for read-only filesystems (e.g. Vercel)
 $storagePath = getenv('APP_STORAGE') ?: (is_writable('/tmp') ? '/tmp/storage' : dirname(__DIR__).'/storage');
 
-return Application::configure(basePath: dirname(__DIR__))
+$app = Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
@@ -27,5 +27,9 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->useStoragePath($storagePath)->create();
+    })->create();
+
+$app->useStoragePath($storagePath);
+
+return $app;
 
