@@ -9,6 +9,9 @@ putenv('LOG_CHANNEL=stderr');
 $_ENV['LOG_CHANNEL'] = 'stderr';
 $_SERVER['LOG_CHANNEL'] = 'stderr';
 
+// Prevent IpUtils::checkIp4 TypeError when REMOTE_ADDR is null (CLI or Serverless)
+$_SERVER['REMOTE_ADDR'] = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+
 // 2. Create all required writable directories in /tmp
 $tmpDirs = [
     '/tmp/storage/logs',
@@ -41,6 +44,7 @@ $bootstrapCacheEnv = [
     'APP_EVENTS_CACHE' => '/tmp/bootstrap/cache/events.php',
     'APP_ROUTES_CACHE' => '/tmp/bootstrap/cache/routes-v7.php',
     'APP_SCHEDULE_CACHE' => '/tmp/bootstrap/cache/schedule-v7.php',
+    'LARAVEL_STORAGE_PATH' => '/tmp/storage',
 ];
 foreach ($bootstrapCacheEnv as $key => $value) {
     putenv("{$key}={$value}");
