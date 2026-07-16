@@ -1,0 +1,10 @@
+{
+    "name": "bank-data",
+    "private": true,
+    "scripts": {
+        "build": "echo 'No frontend build required for this PHP project'"
+    },
+    "engines": {
+        "node": "20.x"
+    }
+}
