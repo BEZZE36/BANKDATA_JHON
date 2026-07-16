@@ -3,13 +3,18 @@
   "framework": null,
   "functions": {
     "api/index.php": {
-      "runtime": "vercel-php@0.7.2"
+      "runtime": "vercel-php@0.6.2",
+      "maxDuration": 30
     }
   },
   "routes": [
     {
       "src": "/build/(.*)",
       "dest": "/public/build/$1"
+    },
+    {
+      "src": "/storage/(.*)",
+      "dest": "/public/storage/$1"
     },
     {
       "src": "/css/(.*)",
@@ -35,6 +40,5 @@
       "src": "/(.*)",
       "dest": "/api/index.php"
     }
-  ],
-  "outputDirectory": "public"
+  ]
 }
