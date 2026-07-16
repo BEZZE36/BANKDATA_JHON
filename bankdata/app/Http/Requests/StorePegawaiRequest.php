@@ -22,7 +22,7 @@ class StorePegawaiRequest extends FormRequest
             'pendidikan_terakhir' => ['nullable', 'string', 'max:100'],
             'tmt_jabatan' => ['nullable', 'date'],
             'status' => ['required', 'in:aktif,pensiun,mutasi,nonaktif'],
-            'dokumen_sk' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpg,jpeg,png'],
+            'dokumen_sk' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpg,jpeg,png,xlsx,docx'],
         ];
     }
 

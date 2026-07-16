@@ -45,7 +45,7 @@
             </div>
         </div>
         <div>
-            <label class="text-sm font-medium">Dokumen SK (opsional, PDF/JPG/PNG, maks 5MB)</label>
+            <label class="text-sm font-medium">Dokumen SK (opsional, PDF/JPG/PNG/XLSX/DOCX, maks 5MB)</label>
             <input type="file" name="dokumen_sk" class="mt-1 w-full text-sm">
         </div>
         <div class="flex gap-3 pt-2">

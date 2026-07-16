@@ -42,7 +42,7 @@ class RoleAndAdminSeeder extends Seeder
 
         // GANTI password ini segera setelah login pertama kali di production!
         $user = User::firstOrCreate(
-            ['email' => '[email protected]'],
+            ['email' => 'admin@sulteng.go.id'],
             [
                 'name' => 'Administrator Sistem',
                 'password' => Hash::make('GantiSegera!2026'),

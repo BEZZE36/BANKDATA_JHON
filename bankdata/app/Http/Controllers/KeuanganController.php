@@ -30,7 +30,7 @@ class KeuanganController extends Controller
             'program_id' => ['nullable', 'exists:program,id'],
             'tanggal' => ['required', 'date'],
             'keterangan' => ['nullable', 'string', 'max:2000'],
-            'bukti' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpg,jpeg,png'],
+            'bukti' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpg,jpeg,png,xlsx,docx'],
         ];
     }
 
