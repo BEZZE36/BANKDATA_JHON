@@ -5,6 +5,6 @@
         "build": "echo 'No frontend build required for this PHP project'"
     },
     "engines": {
-        "node": "20.x"
+        "node": "24.x"
     }
 }
