@@ -1,10 +1,39 @@
 {
-    "name": "bank-data",
-    "private": true,
-    "scripts": {
-        "build": "echo 'No frontend build required for this PHP project'"
-    },
-    "engines": {
-        "node": "24.x"
-    }
+  "name": "bank-data",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "check": "npm run lint && npm run type-check"
+  },
+  "dependencies": {
+    "next": "^15.3.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@supabase/supabase-js": "^2.49.8",
+    "@supabase/ssr": "^0.6.1",
+    "xlsx": "^0.18.5",
+    "otpauth": "^9.3.6",
+    "qrcode": "^1.5.4",
+    "sharp": "^0.34.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@types/node": "^22.14.0",
+    "@types/qrcode": "^1.5.5",
+    "tailwindcss": "^3.4.17",
+    "postcss": "^8.5.3",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.28.0",
+    "eslint-config-next": "^15.3.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
 }
