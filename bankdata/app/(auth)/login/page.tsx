@@ -10,7 +10,7 @@ interface LoginState {
   field?: string;
 }
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const errorParam = searchParams.get('error');
@@ -190,5 +190,15 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+import { Suspense } from 'react';
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center"><div className="w-8 h-8 animate-spin text-emerald-500 rounded-full border-4 border-emerald-500 border-t-transparent" /></div>}>
+      <LoginContent />
+    </Suspense>
   );
 }
