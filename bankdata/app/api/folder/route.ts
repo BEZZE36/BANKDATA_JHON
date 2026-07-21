@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
   const parentId = searchParams.get('parent_id'); // can be "null" string or number
 
   const supabase = await createClient();
-  let query = supabase.from('folder').select('*').is('deleted_at', null).order('nama', { ascending: true });
+  let query = supabase.from('folders').select('*').is('deleted_at', null).order('nama', { ascending: true });
 
   if (modul) query = query.eq('modul', modul);
   
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
 
   const supabase = await createClient();
 
-  const { data, error } = await supabase.from('folder').insert({
+  const { data, error } = await supabase.from('folders').insert({
     nama: body['nama'],
     modul: body['modul'],
     parent_id: body['parent_id'] ? Number(body['parent_id']) : null,

@@ -12,7 +12,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
   const body = await request.json() as Record<string, unknown>;
   const supabase = await createClient();
 
-  const { data, error } = await supabase.from('folder').update({
+  const { data, error } = await supabase.from('folders').update({
     nama: body['nama'],
     updated_by: user.id,
   }).eq('id', id).select().single();
@@ -29,10 +29,10 @@ export async function DELETE(_req: NextRequest, { params }: RouteParams) {
   const { id } = await params;
   const supabase = await createClient();
 
-  const { data: existing } = await supabase.from('folder').select('id, nama').eq('id', id).is('deleted_at', null).single();
+  const { data: existing } = await supabase.from('folders').select('id, nama').eq('id', id).is('deleted_at', null).single();
   if (!existing) return NextResponse.json({ message: 'Tidak ditemukan.' }, { status: 404 });
 
-  await supabase.from('folder').update({ deleted_at: new Date().toISOString() }).eq('id', id);
+  await supabase.from('folders').update({ deleted_at: new Date().toISOString() }).eq('id', id);
   await logActivity({ logName: 'folder', description: `Menghapus folder ${existing.nama}`, causerId: user.id });
   return NextResponse.json({ message: 'Folder berhasil dihapus.' });
 }
