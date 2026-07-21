@@ -23,7 +23,24 @@ export async function GET(request: NextRequest) {
 
   const { data, error } = await query;
   if (error) return NextResponse.json({ message: error.message }, { status: 500 });
-  return NextResponse.json({ data });
+
+  // Fetch attachments
+  const attachableType = (parentId === 'null' || !parentId) ? modul : 'App\\Models\\Folder';
+  const attachableId = (parentId === 'null' || !parentId) ? 0 : Number(parentId);
+
+  let attachQuery = supabase
+    .from('attachments')
+    .select('*')
+    .eq('attachable_type', attachableType)
+    .eq('attachable_id', attachableId)
+    .order('original_name', { ascending: true });
+
+  const { data: filesData, error: attachError } = await attachQuery;
+
+  return NextResponse.json({ 
+    data, // folders
+    files: attachError ? [] : filesData 
+  });
 }
 
 export async function POST(request: NextRequest) {

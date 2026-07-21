@@ -171,7 +171,7 @@ export interface Attachment {
   path: string;
   original_name: string;
   mime_type: string;
-  size: number;
+  size_kb: number;
   uploaded_by: string;
   created_at: string;
   updated_at: string;
