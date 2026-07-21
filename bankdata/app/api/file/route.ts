@@ -44,7 +44,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Ukuran file melebihi batas 69MB.' }, { status: 413 });
     }
 
-    const supabase = await createClient();
+    // Use service client to bypass RLS for storage and db insert
+    const { createServiceClient } = await import('@/lib/supabase/server');
+    const supabase = await createServiceClient();
 
     const attachableType = folderId ? 'App\\Models\\Folder' : modul;
     const attachableId = folderId ? Number(folderId) : 0;

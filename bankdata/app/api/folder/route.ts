@@ -57,7 +57,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: 'Validasi gagal.', errors }, { status: 422 });
   }
 
-  const supabase = await createClient();
+  const { createServiceClient } = await import('@/lib/supabase/server');
+  const supabase = await createServiceClient();
 
   const { data, error } = await supabase.from('folders').insert({
     nama: body['nama'],

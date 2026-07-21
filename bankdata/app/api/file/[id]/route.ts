@@ -12,7 +12,9 @@ export async function DELETE(
   const resolvedParams = await params;
   const id = Number(resolvedParams.id);
 
-  const supabase = await createClient();
+  // Use service client to bypass RLS for storage and db operations
+  const { createServiceClient } = await import('@/lib/supabase/server');
+  const supabase = await createServiceClient();
 
   // Ambil data file
   const { data: file, error: fetchError } = await supabase
