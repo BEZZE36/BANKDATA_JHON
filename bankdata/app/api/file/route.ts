@@ -45,8 +45,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Use service client to bypass RLS for storage and db insert
-    const { createServiceClient } = await import('@/lib/supabase/server');
-    const supabase = await createServiceClient();
+    const { createServiceClient, createClient } = await import('@/lib/supabase/server');
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      console.warn('SUPABASE_SERVICE_ROLE_KEY tidak ditemukan di env, fallback ke client biasa (mungkin akan gagal karena RLS).');
+    }
+    const supabase = process.env.SUPABASE_SERVICE_ROLE_KEY ? await createServiceClient() : await createClient();
 
     const attachableType = folderId ? 'App\\Models\\Folder' : modul;
     const attachableId = folderId ? Number(folderId) : 0;
@@ -56,15 +59,31 @@ export async function POST(request: NextRequest) {
     const uniqueName = `${randomUUID()}.${ext}`;
     const filePath = `${modul}/${uniqueName}`;
 
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from(process.env['NEXT_PUBLIC_STORAGE_BUCKET'] ?? 'bankdata-storage')
-      .upload(filePath, file, {
-        contentType: file.type,
-      });
+    const { S3Client, PutObjectCommand } = await import('@aws-sdk/client-s3');
+    const s3Client = new S3Client({
+      region: process.env.AWS_DEFAULT_REGION || 'ap-southeast-1',
+      endpoint: process.env.AWS_ENDPOINT || 'https://mgmfcxpjweljmyfvjupg.supabase.co/storage/v1/s3',
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
+      },
+      forcePathStyle: true,
+    });
 
-    if (uploadError) {
-      console.error('Storage Upload Error:', uploadError);
-      return NextResponse.json({ message: 'Gagal mengupload file ke storage.' }, { status: 500 });
+    const bucketName = process.env.AWS_BUCKET || process.env['NEXT_PUBLIC_STORAGE_BUCKET'] ?? 'bankdata-storage';
+    
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      await s3Client.send(new PutObjectCommand({
+        Bucket: bucketName,
+        Key: filePath,
+        Body: buffer,
+        ContentType: file.type,
+      }));
+    } catch (s3Error: any) {
+      console.error('S3 Upload Error:', s3Error);
+      return NextResponse.json({ message: `Gagal mengupload file ke storage: ${s3Error.message}` }, { status: 500 });
     }
 
     // Insert to attachments table
