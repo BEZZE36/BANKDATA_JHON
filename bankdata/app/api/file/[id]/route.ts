@@ -39,7 +39,7 @@ export async function DELETE(
       },
       forcePathStyle: true,
     });
-    const bucketName = process.env.AWS_BUCKET || process.env['NEXT_PUBLIC_STORAGE_BUCKET'] ?? 'bankdata-storage';
+    const bucketName = (process.env.AWS_BUCKET || process.env['NEXT_PUBLIC_STORAGE_BUCKET']) ?? 'bankdata-storage';
 
     try {
       await s3Client.send(new DeleteObjectCommand({

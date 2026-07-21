@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
       forcePathStyle: true,
     });
 
-    const bucketName = process.env.AWS_BUCKET || process.env['NEXT_PUBLIC_STORAGE_BUCKET'] ?? 'bankdata-storage';
+    const bucketName = (process.env.AWS_BUCKET || process.env['NEXT_PUBLIC_STORAGE_BUCKET']) ?? 'bankdata-storage';
     
     try {
       const arrayBuffer = await file.arrayBuffer();
