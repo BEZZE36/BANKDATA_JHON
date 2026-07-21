@@ -26,8 +26,9 @@ export async function GET(request: NextRequest) {
 
   // Ringkasan total
   const { data: summary } = await supabase.from('keuangan').select('jenis, nominal').is('deleted_at', null);
-  const totalAnggaran = summary?.filter(k => k.jenis === 'anggaran').reduce((s, k) => s + Number(k.nominal), 0) ?? 0;
-  const totalRealisasi = summary?.filter(k => k.jenis === 'realisasi').reduce((s, k) => s + Number(k.nominal), 0) ?? 0;
+  const safeSummary = summary ?? [];
+  const totalAnggaran = safeSummary.filter(k => k.jenis === 'anggaran').reduce((s, k) => s + Number(k.nominal), 0);
+  const totalRealisasi = safeSummary.filter(k => k.jenis === 'realisasi').reduce((s, k) => s + Number(k.nominal), 0);
 
   return NextResponse.json({ data, total: count ?? 0, page, perPage, summary: { totalAnggaran, totalRealisasi } });
 }
