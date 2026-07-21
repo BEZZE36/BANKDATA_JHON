@@ -69,7 +69,7 @@ export default async function PegawaiPage({ searchParams }: PageProps) {
       />
 
       <div className="p-6 space-y-5">
-        <FolderExplorer modul="kepegawaian" />
+        <FolderExplorer modul="kepegawaian" canManage={bisaKelola} />
 
         {/* Filter Bar */}
         <div className="card p-4 flex flex-wrap gap-3 items-center">

@@ -42,7 +42,7 @@ export default async function AsetPage({ searchParams }: PageProps) {
         actions={bisaKelola ? <Button href="/aset/tambah">Tambah Aset</Button> : undefined}
       />
       <div className="p-6 space-y-5">
-        <FolderExplorer modul="aset" />
+        <FolderExplorer modul="aset" canManage={bisaKelola} />
 
         <div className="card p-4 flex flex-wrap gap-3 items-center">
           <SearchBox placeholder="Cari nama, kode, atau lokasi aset..." className="flex-1 min-w-[200px]" />

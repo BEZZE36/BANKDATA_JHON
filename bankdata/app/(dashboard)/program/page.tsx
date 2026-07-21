@@ -44,7 +44,7 @@ export default async function ProgramPage({ searchParams }: PageProps) {
         actions={bisaKelola ? <Button href="/program/tambah">Tambah Program</Button> : undefined}
       />
       <div className="p-6 space-y-5">
-        <FolderExplorer modul="program" />
+        <FolderExplorer modul="program" canManage={bisaKelola} />
 
         <div className="card p-4 flex flex-wrap gap-3 items-center">
           <SearchBox placeholder="Cari nama atau kode program..." className="flex-1 min-w-[200px]" />

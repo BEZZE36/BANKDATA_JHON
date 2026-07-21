@@ -19,7 +19,8 @@ export async function GET() {
     const { data, error } = await supabase.auth.admin.createUser({
           email: 'admin@sulteng.go.id',
           password: 'GantiSegera!2026',
-          email_confirm: true
+          email_confirm: true,
+          user_metadata: { role: 'admin' }
         });
 
     if (error) {

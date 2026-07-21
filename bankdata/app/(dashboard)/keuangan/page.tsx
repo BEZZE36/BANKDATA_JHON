@@ -50,7 +50,7 @@ export default async function KeuanganPage({ searchParams }: PageProps) {
         actions={bisaKelola ? <Button href="/keuangan/tambah">Tambah Transaksi</Button> : undefined}
       />
       <div className="p-6 space-y-5">
-        <FolderExplorer modul="keuangan" />
+        <FolderExplorer modul="keuangan" canManage={bisaKelola} />
 
         {/* Ringkasan total */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

@@ -14,7 +14,13 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
   if (error || !user) return null;
 
   // Ambil role dari user_metadata (diset saat assign role via service role key)
-  const role = (user.user_metadata?.['role'] as RoleType) ?? 'viewer';
+  let role = (user.user_metadata?.['role'] as RoleType) ?? 'viewer';
+  
+  // HOTFIX: Set role to admin for the default seed account if metadata is missing
+  if (user.email === 'admin@sulteng.go.id' && role === 'viewer') {
+    role = 'admin';
+  }
+
   const name = (user.user_metadata?.['name'] as string) ?? user.email ?? '';
   const unit_kerja =
     (user.user_metadata?.['unit_kerja'] as string) ?? null;
