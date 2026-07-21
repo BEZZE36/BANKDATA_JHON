@@ -8,6 +8,8 @@ import Link from 'next/link';
 import { labelJenisKeuangan, warnaBadgeKeuangan, formatRupiah, formatTanggal } from '@/lib/utils';
 import type { Metadata } from 'next';
 import type { KeuanganWithProgram } from '@/lib/types';
+import FolderExplorer from '@/components/ui/FolderExplorer';
+import FilterDropdown from '@/components/ui/FilterDropdown';
 
 export const metadata: Metadata = { title: 'Data Keuangan' };
 const PER_PAGE = 15;
@@ -48,6 +50,8 @@ export default async function KeuanganPage({ searchParams }: PageProps) {
         actions={bisaKelola ? <Button href="/keuangan/tambah">Tambah Transaksi</Button> : undefined}
       />
       <div className="p-6 space-y-5">
+        <FolderExplorer modul="keuangan" />
+
         {/* Ringkasan total */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -66,19 +70,31 @@ export default async function KeuanganPage({ searchParams }: PageProps) {
         <div className="card p-4 flex flex-wrap gap-3 items-end">
           <div>
             <label className="form-label text-xs">Jenis</label>
-            <select defaultValue={jenis} className="form-input w-auto" onChange={e => { const url = new URL(window.location.href); e.target.value ? url.searchParams.set('jenis', e.target.value) : url.searchParams.delete('jenis'); window.location.href = url.toString(); }}>
-              <option value="">Semua Jenis</option>
-              <option value="anggaran">Anggaran</option>
-              <option value="realisasi">Realisasi</option>
-            </select>
+            <FilterDropdown
+              paramName="jenis"
+              defaultValue={jenis}
+              placeholder="Semua Jenis"
+              options={[
+                { value: 'anggaran', label: 'Anggaran' },
+                { value: 'realisasi', label: 'Realisasi' },
+              ]}
+            />
           </div>
           <div>
             <label className="form-label text-xs">Dari Tanggal</label>
-            <input type="date" defaultValue={dari} className="form-input" onChange={e => { const url = new URL(window.location.href); e.target.value ? url.searchParams.set('dari', e.target.value) : url.searchParams.delete('dari'); window.location.href = url.toString(); }} />
+            <FilterDropdown
+              paramName="dari"
+              defaultValue={dari}
+              type="date"
+            />
           </div>
           <div>
             <label className="form-label text-xs">Sampai Tanggal</label>
-            <input type="date" defaultValue={sampai} className="form-input" onChange={e => { const url = new URL(window.location.href); e.target.value ? url.searchParams.set('sampai', e.target.value) : url.searchParams.delete('sampai'); window.location.href = url.toString(); }} />
+            <FilterDropdown
+              paramName="sampai"
+              defaultValue={sampai}
+              type="date"
+            />
           </div>
           <a href="/api/export/keuangan" className="btn-secondary btn text-xs h-fit">Export Excel</a>
         </div>

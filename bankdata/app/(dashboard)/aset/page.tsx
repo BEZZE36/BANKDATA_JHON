@@ -10,6 +10,8 @@ import Link from 'next/link';
 import { labelKondisiAset, warnaBadgeAset, formatRupiah, storageUrl } from '@/lib/utils';
 import type { Metadata } from 'next';
 import type { Aset } from '@/lib/types';
+import FolderExplorer from '@/components/ui/FolderExplorer';
+import FilterDropdown from '@/components/ui/FilterDropdown';
 
 export const metadata: Metadata = { title: 'Data Aset' };
 const PER_PAGE = 15;
@@ -40,15 +42,20 @@ export default async function AsetPage({ searchParams }: PageProps) {
         actions={bisaKelola ? <Button href="/aset/tambah">Tambah Aset</Button> : undefined}
       />
       <div className="p-6 space-y-5">
-        <div className="card p-4 flex flex-wrap gap-3">
+        <FolderExplorer modul="aset" />
+
+        <div className="card p-4 flex flex-wrap gap-3 items-center">
           <SearchBox placeholder="Cari nama, kode, atau lokasi aset..." className="flex-1 min-w-[200px]" />
-          <select defaultValue={kondisi} className="form-input w-auto"
-            onChange={e => { const url = new URL(window.location.href); e.target.value ? url.searchParams.set('kondisi', e.target.value) : url.searchParams.delete('kondisi'); window.location.href = url.toString(); }}>
-            <option value="">Semua Kondisi</option>
-            <option value="baik">Baik</option>
-            <option value="rusak_ringan">Rusak Ringan</option>
-            <option value="rusak_berat">Rusak Berat</option>
-          </select>
+          <FilterDropdown
+            paramName="kondisi"
+            defaultValue={kondisi}
+            placeholder="Semua Kondisi"
+            options={[
+              { value: 'baik', label: 'Baik' },
+              { value: 'rusak_ringan', label: 'Rusak Ringan' },
+              { value: 'rusak_berat', label: 'Rusak Berat' },
+            ]}
+          />
         </div>
         <div className="flex justify-end gap-2">
           <a href="/api/export/aset" className="btn-secondary btn text-xs">

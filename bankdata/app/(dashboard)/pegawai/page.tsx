@@ -14,6 +14,7 @@ import {
 import type { Metadata } from 'next';
 import type { Pegawai } from '@/lib/types';
 import { FilterStatus, DeleteButton } from '@/components/pegawai/ClientActions';
+import FolderExplorer from '@/components/ui/FolderExplorer';
 
 export const metadata: Metadata = { title: 'Data Kepegawaian' };
 
@@ -68,6 +69,8 @@ export default async function PegawaiPage({ searchParams }: PageProps) {
       />
 
       <div className="p-6 space-y-5">
+        <FolderExplorer modul="kepegawaian" />
+
         {/* Filter Bar */}
         <div className="card p-4 flex flex-wrap gap-3 items-center">
           <SearchBox placeholder="Cari nama, NIP, unit kerja..." className="flex-1 min-w-[200px]" />

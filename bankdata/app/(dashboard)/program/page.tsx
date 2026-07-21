@@ -10,6 +10,8 @@ import Link from 'next/link';
 import { labelStatusProgram, warnaBadgeProgram, persenCapaian, formatRupiah } from '@/lib/utils';
 import type { Metadata } from 'next';
 import type { Program } from '@/lib/types';
+import FolderExplorer from '@/components/ui/FolderExplorer';
+import FilterDropdown from '@/components/ui/FilterDropdown';
 
 export const metadata: Metadata = { title: 'Data Program' };
 const PER_PAGE = 15;
@@ -42,11 +44,16 @@ export default async function ProgramPage({ searchParams }: PageProps) {
         actions={bisaKelola ? <Button href="/program/tambah">Tambah Program</Button> : undefined}
       />
       <div className="p-6 space-y-5">
-        <div className="card p-4 flex flex-wrap gap-3">
+        <FolderExplorer modul="program" />
+
+        <div className="card p-4 flex flex-wrap gap-3 items-center">
           <SearchBox placeholder="Cari nama atau kode program..." className="flex-1 min-w-[200px]" />
-          <input type="number" defaultValue={tahun} placeholder="Tahun Anggaran"
-            min={2000} max={2100} className="form-input w-36"
-            onChange={e => { const url = new URL(window.location.href); e.target.value ? url.searchParams.set('tahun_anggaran', e.target.value) : url.searchParams.delete('tahun_anggaran'); window.location.href = url.toString(); }}
+          <FilterDropdown
+            paramName="tahun_anggaran"
+            defaultValue={tahun}
+            type="number"
+            placeholder="Tahun Anggaran"
+            className="form-input w-36"
           />
         </div>
 
