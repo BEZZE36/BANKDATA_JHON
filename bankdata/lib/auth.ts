@@ -20,9 +20,28 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
     (user.user_metadata?.['unit_kerja'] as string) ?? null;
   const is_active =
     (user.user_metadata?.['is_active'] as boolean) ?? true;
+  const email = user.email ?? '';
+
+  // Sinkronisasi dengan tabel public.users untuk mendapatkan ID integer (karena DB Laravel lama pakai bigint)
+  let db_id: number | null = null;
+  if (email) {
+    const { data: dbUser } = await supabase.from('users').select('id').eq('email', email).single();
+    if (dbUser) {
+      db_id = dbUser.id;
+    } else {
+      // Jika belum ada di public.users, buat baru (biasanya saat user baru di Supabase Auth)
+      const { data: newUser } = await supabase.from('users').insert({
+        name: name,
+        email: email,
+        password: 'sync-from-supabase',
+        is_active: true
+      }).select('id').single();
+      if (newUser) db_id = newUser.id;
+    }
+  }
 
   return {
-    id: user.id,
+    id: db_id ? String(db_id) : user.id, // Gunakan integer ID sebagai string agar foreign key (bigint) tidak error
     email: user.email ?? '',
     name,
     role,
