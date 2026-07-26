@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { getCurrentUser, logActivity } from '@/lib/auth';
 
 // POST /api/auth/logout
-export async function POST(request: NextRequest) {
+export async function POST() {
   const user = await getCurrentUser();
   const supabase = await createClient();
 
@@ -17,7 +17,6 @@ export async function POST(request: NextRequest) {
 
   await supabase.auth.signOut();
 
-  const url = request.nextUrl.clone();
-  url.pathname = '/login';
-  return NextResponse.redirect(url);
+  // Kembalikan 200 OK — navigasi ke /login ditangani client-side oleh LogoutButton
+  return NextResponse.json({ success: true });
 }

@@ -6,6 +6,7 @@ import Pagination from '@/components/ui/Pagination';
 import { formatDateTime } from '@/lib/utils';
 import type { Metadata } from 'next';
 import type { ActivityLog } from '@/lib/types';
+import LogFilterSelect from './LogFilterSelect';
 
 export const metadata: Metadata = { title: 'Log Aktivitas' };
 const PER_PAGE = 20;
@@ -42,11 +43,7 @@ export default async function LogAktivitasPage({ searchParams }: PageProps) {
       <div className="p-6 space-y-5">
         <div className="card p-4 flex flex-wrap gap-3">
           <SearchBox placeholder="Cari deskripsi aktivitas..." className="flex-1 min-w-[200px]" />
-          <select defaultValue={logName} className="form-input w-auto"
-            onChange={e => { const url = new URL(window.location.href); e.target.value ? url.searchParams.set('log_name', e.target.value) : url.searchParams.delete('log_name'); window.location.href = url.toString(); }}>
-            <option value="">Semua Modul</option>
-            {modulList.map(m => <option key={m} value={m}>{m}</option>)}
-          </select>
+          <LogFilterSelect currentValue={logName} modulList={modulList} />
         </div>
 
         <div className="card overflow-hidden">
