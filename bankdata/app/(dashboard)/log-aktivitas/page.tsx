@@ -62,7 +62,7 @@ export default async function LogAktivitasPage({ searchParams }: PageProps) {
                       </span>
                     </td>
                     <td className="text-slate-700">{log.description}</td>
-                    <td className="text-xs text-slate-500 font-mono">{log.causer_id ? log.causer_id.slice(0, 8) + '\u2026' : '-'}</td>
+                    <td className="text-xs text-slate-500 font-mono">{log.causer_id ? String(log.causer_id).slice(0, 8) + '\u2026' : '-'}</td>
                   </tr>
                 )) : (
                   <tr><td colSpan={4} className="text-center py-12 text-slate-400">Belum ada log aktivitas</td></tr>

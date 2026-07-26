@@ -184,7 +184,7 @@ export interface ActivityLog {
   subject_type: string | null;
   subject_id: number | null;
   causer_type: string | null;
-  causer_id: string | null;
+  causer_id: string | number | null;
   properties: Record<string, unknown> | null;
   created_at: string;
   updated_at: string;
