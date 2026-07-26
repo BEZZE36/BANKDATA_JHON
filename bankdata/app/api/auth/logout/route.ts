@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { getCurrentUser, logActivity } from '@/lib/auth';
 
 // POST /api/auth/logout
-export async function POST() {
+export async function POST(request: NextRequest) {
   const user = await getCurrentUser();
   const supabase = await createClient();
 
@@ -17,5 +17,7 @@ export async function POST() {
 
   await supabase.auth.signOut();
 
-  return NextResponse.redirect(new URL('/login', process.env['NEXT_PUBLIC_APP_URL'] ?? 'http://localhost:3000'));
+  const url = request.nextUrl.clone();
+  url.pathname = '/login';
+  return NextResponse.redirect(url);
 }
