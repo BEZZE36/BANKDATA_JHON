@@ -1,32 +1,42 @@
 'use client';
 
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { useCallback } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { useCallback, useRef } from 'react';
 
 interface SearchBoxProps {
   placeholder?: string;
   paramName?: string;
   className?: string;
+  defaultValue?: string;
 }
 
-export default function SearchBox({ placeholder = 'Cari...', paramName = 'q', className }: SearchBoxProps) {
+export default function SearchBox({
+  placeholder = 'Cari...',
+  paramName = 'q',
+  className,
+  defaultValue = '',
+}: SearchBoxProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const params = new URLSearchParams(searchParams.toString());
+      if (timerRef.current) clearTimeout(timerRef.current);
       const val = e.target.value;
-      if (val) {
-        params.set(paramName, val);
-      } else {
-        params.delete(paramName);
-      }
-      params.delete('page'); // reset ke halaman 1 saat search
-      router.push(`${pathname}?${params.toString()}`);
+      timerRef.current = setTimeout(() => {
+        // Baca URL params saat ini tanpa useSearchParams
+        const url = new URL(window.location.href);
+        if (val) {
+          url.searchParams.set(paramName, val);
+        } else {
+          url.searchParams.delete(paramName);
+        }
+        url.searchParams.delete('page');
+        router.push(`${pathname}?${url.searchParams.toString()}`);
+      }, 400);
     },
-    [pathname, router, searchParams, paramName],
+    [pathname, router, paramName],
   );
 
   return (
@@ -42,7 +52,7 @@ export default function SearchBox({ placeholder = 'Cari...', paramName = 'q', cl
       </svg>
       <input
         type="search"
-        defaultValue={searchParams.get(paramName) ?? ''}
+        defaultValue={defaultValue}
         onChange={handleChange}
         placeholder={placeholder}
         className="form-input pl-9 pr-4 py-2 w-full sm:w-64"

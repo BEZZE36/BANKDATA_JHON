@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 interface PaginationProps {
@@ -12,13 +12,16 @@ interface PaginationProps {
 
 export default function Pagination({ total, page, perPage }: PaginationProps) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const totalPages = Math.ceil(total / perPage);
 
   if (totalPages <= 1) return null;
 
   function buildHref(p: number) {
-    const params = new URLSearchParams(searchParams.toString());
+    // Baca params saat ini dari window.location agar tidak butuh useSearchParams
+    if (typeof window === 'undefined') {
+      return `${pathname}?page=${p}`;
+    }
+    const params = new URLSearchParams(window.location.search);
     params.set('page', String(p));
     return `${pathname}?${params.toString()}`;
   }
@@ -26,7 +29,7 @@ export default function Pagination({ total, page, perPage }: PaginationProps) {
   const start = (page - 1) * perPage + 1;
   const end = Math.min(page * perPage, total);
 
-  // Generate page numbers (max 5 visible)
+  // Generate page numbers (max 7 visible)
   const pages: (number | '...')[] = [];
   if (totalPages <= 7) {
     for (let i = 1; i <= totalPages; i++) pages.push(i);

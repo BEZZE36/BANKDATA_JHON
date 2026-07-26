@@ -57,7 +57,7 @@ export default async function PenggunaPage({ searchParams }: PageProps) {
       />
       <div className="p-6 space-y-5">
         <div className="card p-4">
-          <SearchBox placeholder="Cari nama atau email..." className="max-w-sm" />
+          <SearchBox placeholder="Cari nama atau email..." className="max-w-sm" defaultValue={q} />
         </div>
         <div className="card overflow-hidden">
           <div className="table-wrapper">

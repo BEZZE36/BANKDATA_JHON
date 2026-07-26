@@ -45,7 +45,7 @@ export default async function AsetPage({ searchParams }: PageProps) {
         <FolderExplorer modul="aset" canManage={bisaKelola} />
 
         <div className="card p-4 flex flex-wrap gap-3 items-center">
-          <SearchBox placeholder="Cari nama, kode, atau lokasi aset..." className="flex-1 min-w-[200px]" />
+          <SearchBox placeholder="Cari nama, kode, atau lokasi aset..." className="flex-1 min-w-[200px]" defaultValue={q} />
           <FilterDropdown
             paramName="kondisi"
             defaultValue={kondisi}

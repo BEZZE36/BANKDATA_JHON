@@ -73,7 +73,7 @@ export default async function PegawaiPage({ searchParams }: PageProps) {
 
         {/* Filter Bar */}
         <div className="card p-4 flex flex-wrap gap-3 items-center">
-          <SearchBox placeholder="Cari nama, NIP, unit kerja..." className="flex-1 min-w-[200px]" />
+          <SearchBox placeholder="Cari nama, NIP, unit kerja..." className="flex-1 min-w-[200px]" defaultValue={q} />
           <FilterStatus currentStatus={status} />
         </div>
 

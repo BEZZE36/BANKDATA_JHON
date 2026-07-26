@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 interface Option {
   value: string;
@@ -26,25 +26,22 @@ export default function FilterDropdown({
 }: FilterDropdownProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const value = e.target.value;
-    const current = new URLSearchParams(Array.from(searchParams.entries()));
+    // Baca URL params saat ini dari window.location tanpa useSearchParams
+    const url = new URL(window.location.href);
 
     if (value) {
-      current.set(paramName, value);
+      url.searchParams.set(paramName, value);
     } else {
-      current.delete(paramName);
+      url.searchParams.delete(paramName);
     }
-    
+
     // Reset page to 1 on filter change
-    current.delete('page');
+    url.searchParams.delete('page');
 
-    const search = current.toString();
-    const query = search ? `?${search}` : '';
-
-    router.push(`${pathname}${query}`);
+    router.push(`${pathname}?${url.searchParams.toString()}`);
   };
 
   if (type === 'date' || type === 'number' || type === 'text') {

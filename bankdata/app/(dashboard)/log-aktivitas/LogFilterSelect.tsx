@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 interface LogFilterSelectProps {
   currentValue: string;
@@ -9,17 +9,17 @@ interface LogFilterSelectProps {
 
 export default function LogFilterSelect({ currentValue, modulList }: LogFilterSelectProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const params = new URLSearchParams(searchParams.toString());
+    const url = new URL(window.location.href);
     if (e.target.value) {
-      params.set('log_name', e.target.value);
+      url.searchParams.set('log_name', e.target.value);
     } else {
-      params.delete('log_name');
+      url.searchParams.delete('log_name');
     }
-    params.delete('page');
-    router.push(`/log-aktivitas?${params.toString()}`);
+    url.searchParams.delete('page');
+    router.push(`${pathname}?${url.searchParams.toString()}`);
   }
 
   return (

@@ -47,7 +47,7 @@ export default async function ProgramPage({ searchParams }: PageProps) {
         <FolderExplorer modul="program" canManage={bisaKelola} />
 
         <div className="card p-4 flex flex-wrap gap-3 items-center">
-          <SearchBox placeholder="Cari nama atau kode program..." className="flex-1 min-w-[200px]" />
+          <SearchBox placeholder="Cari nama atau kode program..." className="flex-1 min-w-[200px]" defaultValue={q} />
           <FilterDropdown
             paramName="tahun_anggaran"
             defaultValue={tahun}

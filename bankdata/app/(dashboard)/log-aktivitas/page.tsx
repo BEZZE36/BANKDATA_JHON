@@ -42,7 +42,7 @@ export default async function LogAktivitasPage({ searchParams }: PageProps) {
       />
       <div className="p-6 space-y-5">
         <div className="card p-4 flex flex-wrap gap-3">
-          <SearchBox placeholder="Cari deskripsi aktivitas..." className="flex-1 min-w-[200px]" />
+          <SearchBox placeholder="Cari deskripsi aktivitas..." className="flex-1 min-w-[200px]" defaultValue={q} />
           <LogFilterSelect currentValue={logName} modulList={modulList} />
         </div>
 
@@ -62,7 +62,7 @@ export default async function LogAktivitasPage({ searchParams }: PageProps) {
                       </span>
                     </td>
                     <td className="text-slate-700">{log.description}</td>
-                    <td className="text-xs text-slate-500 font-mono">{log.causer_id ? log.causer_id.slice(0, 8) + '…' : '-'}</td>
+                    <td className="text-xs text-slate-500 font-mono">{log.causer_id ? log.causer_id.slice(0, 8) + '\u2026' : '-'}</td>
                   </tr>
                 )) : (
                   <tr><td colSpan={4} className="text-center py-12 text-slate-400">Belum ada log aktivitas</td></tr>
