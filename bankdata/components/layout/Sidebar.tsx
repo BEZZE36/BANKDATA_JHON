@@ -125,7 +125,7 @@ function SidebarHeaderContent({ user }: { user: SessionUser }) {
   return (
     <div className={cn(
       'flex items-center gap-3 overflow-hidden transition-all duration-200',
-      isCollapsed ? 'justify-center' : 'justify-between'
+      isCollapsed ? 'justify-center' : 'justify-start'
     )}>
       {/* Logo + Text */}
       <div className="flex items-center gap-2 min-w-0">
@@ -141,10 +141,6 @@ function SidebarHeaderContent({ user }: { user: SessionUser }) {
           </div>
         )}
       </div>
-      {/* Toggle button — only when expanded */}
-      {!isCollapsed && (
-        <SidebarTrigger className="text-slate-400 hover:text-white hover:bg-white/10 rounded-md p-1.5 transition-colors shrink-0" />
-      )}
     </div>
   );
 }
