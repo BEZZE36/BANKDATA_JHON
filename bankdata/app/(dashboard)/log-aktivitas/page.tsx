@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { requireRole } from '@/lib/auth';
 import Header from '@/components/layout/Header';
-import SearchBox from '@/components/ui/search-box';
+import SearchBox from '@/components/ui/SearchBox';
 import Pagination from '@/components/ui/Pagination';
 import { formatDateTime } from '@/lib/utils';
 import type { Metadata } from 'next';

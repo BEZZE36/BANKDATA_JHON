@@ -1,9 +1,9 @@
 import { createClient } from '@/lib/supabase/server';
 import { requireAuth } from '@/lib/auth';
 import Header from '@/components/layout/Header';
-import SearchBox from '@/components/ui/search-box';
+import SearchBox from '@/components/ui/SearchBox';
 import Pagination from '@/components/ui/Pagination';
-import Badge from '@/components/ui/badge';
+import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/button';
 import ProgressBar from '@/components/ui/ProgressBar';
 import Link from 'next/link';
