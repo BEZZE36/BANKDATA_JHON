@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import NextTopLoader from 'nextjs-toploader';
 import './globals.css';
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: {
@@ -19,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <body>
         <NextTopLoader color="#059669" showSpinner={false} shadow="0 0 10px #059669,0 0 5px #059669" />
         {children}
