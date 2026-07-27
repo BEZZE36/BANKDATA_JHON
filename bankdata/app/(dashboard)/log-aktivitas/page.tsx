@@ -18,6 +18,14 @@ export default async function LogAktivitasPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const supabase = await createClient();
 
+  // Auto cleanup: Hapus log yang umurnya lebih dari 6 bulan
+  const sixMonthsAgo = new Date();
+  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+  await supabase
+    .from('activity_log')
+    .delete()
+    .lt('created_at', sixMonthsAgo.toISOString());
+
   const q = params['q'] ?? '';
   const logName = params['log_name'] ?? '';
   const page = Math.max(1, Number(params['page'] ?? 1));
@@ -80,25 +88,38 @@ export default async function LogAktivitasPage({ searchParams }: PageProps) {
           </div>
         </div>
 
+        <div className="bg-amber-50 border border-amber-200 text-amber-700 px-4 py-3 rounded-xl text-sm flex items-start gap-3 shadow-sm">
+          <svg className="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          <div>
+            <p className="font-semibold mb-0.5">Informasi Sistem</p>
+            <p>Untuk menghemat penyimpanan server, sistem akan <strong>menghapus/mereset log aktivitas secara otomatis</strong> setiap usianya melewati 6 bulan.</p>
+          </div>
+        </div>
+
         <div className="card overflow-hidden shadow-sm border border-slate-200">
           <div className="table-wrapper">
             <table className="data-table min-w-full">
               <thead>
                 <tr className="bg-slate-50/80 border-b border-slate-200">
-                  <th className="py-4 px-5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider w-48">Waktu</th>
+                  <th className="py-4 px-5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider w-16">No</th>
+                  <th className="py-4 px-5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider w-56">Waktu</th>
                   <th className="py-4 px-5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider w-40">Modul</th>
                   <th className="py-4 px-5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Aktivitas</th>
                   <th className="py-4 px-5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider w-64">Pelaku</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {logs && logs.length > 0 ? (logs as ActivityLog[]).map((log) => {
+                {logs && logs.length > 0 ? (logs as ActivityLog[]).map((log, index) => {
+                  const no = (page - 1) * PER_PAGE + index + 1;
                   const user = log.causer_id ? userMap[String(log.causer_id)] : null;
                   const modul = getModulInfo(log.log_name);
                   const props = log.properties as Record<string, any> | null;
 
                   return (
                     <tr key={log.id} className="hover:bg-slate-50/50 transition-colors group">
+                      <td className="py-3.5 px-5 align-top">
+                        <span className="text-sm font-medium text-slate-500">{no}</span>
+                      </td>
                       <td className="py-3.5 px-5 align-top">
                         <div className="flex items-center text-sm text-slate-600 font-medium whitespace-nowrap">
                           {log.created_at ? formatDateTime(log.created_at) : (
@@ -159,7 +180,7 @@ export default async function LogAktivitasPage({ searchParams }: PageProps) {
                   );
                 }) : (
                   <tr>
-                    <td colSpan={4} className="py-16 text-center">
+                    <td colSpan={5} className="py-12 text-center">
                       <div className="flex flex-col items-center justify-center text-slate-400">
                         <svg className="w-12 h-12 mb-3 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z" /></svg>
                         <p className="text-base font-medium text-slate-600">Belum ada log aktivitas</p>
