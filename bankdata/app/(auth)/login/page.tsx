@@ -61,6 +61,9 @@ function LoginContent() {
       return;
     }
 
+    // Catat log login
+    await fetch("/api/auth/log-login", { method: "POST" }).catch(() => {});
+
     router.push("/dashboard");
     router.refresh();
   }

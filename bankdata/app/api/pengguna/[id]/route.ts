@@ -81,10 +81,12 @@ export async function PATCH(
     return NextResponse.json({ error: err.message ?? 'Gagal memperbarui pengguna.' }, { status: res.status });
   }
 
+  const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'Unknown IP';
   await logActivity({
     logName: 'pengguna',
-    description: `Update pengguna ID: ${id}`,
+    description: `Update pengguna: ${body.name || id}`,
     causerId: currentUser.id,
+    properties: { ip },
   });
 
   return NextResponse.json({ message: 'Pengguna berhasil diperbarui.' });
@@ -113,10 +115,12 @@ export async function DELETE(
     return NextResponse.json({ error: 'Gagal menghapus pengguna.' }, { status: res.status });
   }
 
+  const ip = _request.headers.get('x-forwarded-for') || _request.headers.get('x-real-ip') || 'Unknown IP';
   await logActivity({
     logName: 'pengguna',
     description: `Hapus pengguna ID: ${id}`,
     causerId: currentUser.id,
+    properties: { ip },
   });
 
   return NextResponse.json({ message: 'Pengguna berhasil dihapus.' });

@@ -77,10 +77,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: data.message ?? 'Gagal membuat pengguna.' }, { status: res.status });
   }
 
+  const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'Unknown IP';
   await logActivity({
     logName: 'pengguna',
-    description: `Tambah pengguna: ${body.email}`,
+    description: `Tambah pengguna: ${body.name || body.email}`,
     causerId: currentUser.id,
+    properties: { ip, email: body.email },
   });
 
   return NextResponse.json({ message: 'Pengguna berhasil dibuat.', id: data.id }, { status: 201 });

@@ -31,7 +31,7 @@ export default async function LogAktivitasPage({ searchParams }: PageProps) {
   const page = Math.max(1, Number(params['page'] ?? 1));
 
   let query = supabase.from('activity_log').select('*', { count: 'exact' })
-    .order('created_at', { ascending: false })
+    .order('id', { ascending: false })
     .range((page - 1) * PER_PAGE, page * PER_PAGE - 1);
 
   if (q) query = query.ilike('description', `%${q}%`);
