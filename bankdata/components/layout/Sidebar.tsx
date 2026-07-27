@@ -159,7 +159,7 @@ export default function Sidebar({ user }: SidebarProps) {
   return (
     <ShadcnSidebar collapsible="icon">
       {/* Header */}
-      <SidebarHeader className="px-3 py-3 border-b border-white/10">
+      <SidebarHeader className="p-2 py-3 border-b border-white/10">
         <SidebarHeaderContent user={user} />
       </SidebarHeader>
 
