@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
-import Input from '@/components/ui/Input';
+import Input from '@/components/ui/input';
 import Select from '@/components/ui/Select';
-import Button from '@/components/ui/Button';
+import Button from '@/components/ui/button';
 import Alert from '@/components/ui/Alert';
 
 const statusOptions = [

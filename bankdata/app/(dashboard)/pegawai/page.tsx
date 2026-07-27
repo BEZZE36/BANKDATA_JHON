@@ -1,10 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
 import { requireAuth } from '@/lib/auth';
 import Header from '@/components/layout/Header';
-import SearchBox from '@/components/ui/SearchBox';
+import SearchBox from '@/components/ui/search-box';
 import Pagination from '@/components/ui/Pagination';
-import Badge from '@/components/ui/Badge';
-import Button from '@/components/ui/Button';
+import Badge from '@/components/ui/badge';
+import Button from '@/components/ui/button';
 import Link from 'next/link';
 import {
   formatTanggal,

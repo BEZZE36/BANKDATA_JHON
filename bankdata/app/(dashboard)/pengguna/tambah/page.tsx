@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
-import Input from '@/components/ui/Input';
-import Button from '@/components/ui/Button';
+import Input from '@/components/ui/input';
+import Button from '@/components/ui/button';
 
 const ROLE_OPTIONS = [
   { value: 'viewer', label: 'Viewer' },
