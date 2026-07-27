@@ -118,6 +118,7 @@ export async function logActivity(params: {
 }): Promise<void> {
   const supabase = await createClient();
 
+  const now = new Date().toISOString();
   const { error } = await supabase.from('activity_log').insert({
     log_name: params.logName,
     description: params.description,
@@ -126,6 +127,8 @@ export async function logActivity(params: {
     subject_type: params.subjectType ?? null,
     subject_id: params.subjectId ?? null,
     properties: params.properties ?? {},
+    created_at: now,
+    updated_at: now,
   });
 
   if (error) {
