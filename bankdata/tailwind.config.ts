@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import plugin from 'tailwindcss/plugin';
 
 const config: Config = {
   content: [
@@ -27,6 +28,17 @@ const config: Config = {
           900: '#064e3b',
           950: '#022c22',
         },
+        // Shadcn sidebar CSS variable colors
+        sidebar: {
+          DEFAULT: 'var(--sidebar)',
+          foreground: 'var(--sidebar-foreground)',
+          primary: 'var(--sidebar-primary)',
+          'primary-foreground': 'var(--sidebar-primary-foreground)',
+          accent: 'var(--sidebar-accent)',
+          'accent-foreground': 'var(--sidebar-accent-foreground)',
+          border: 'var(--sidebar-border)',
+          ring: 'var(--sidebar-ring)',
+        },
       },
       animation: {
         'fade-in': 'fadeIn 0.3s ease-in-out',
@@ -49,7 +61,13 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addVariant }) {
+      addVariant('data-state-open', '&[data-state="open"]');
+      addVariant('data-state-closed', '&[data-state="closed"]');
+      addVariant('data-collapsible-icon', '&[data-collapsible="icon"]');
+    }),
+  ],
 };
 
 export default config;
