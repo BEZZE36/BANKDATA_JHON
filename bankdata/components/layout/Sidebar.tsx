@@ -131,7 +131,7 @@ export default function Sidebar({ user }: SidebarProps) {
                   return (
                     <SidebarMenuItem key={item.href}>
                       <SidebarMenuButton
-                        asChild
+                        render={<Link href={item.href} />}
                         isActive={isActive}
                         tooltip={item.label}
                         className={cn(
@@ -141,10 +141,8 @@ export default function Sidebar({ user }: SidebarProps) {
                             : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                         )}
                       >
-                        <Link href={item.href}>
-                          {item.icon}
-                          <span className="font-medium">{item.label}</span>
-                        </Link>
+                        {item.icon}
+                        <span className="font-medium">{item.label}</span>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   );

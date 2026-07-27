@@ -42,11 +42,13 @@
   }
 
   * {
-    @apply border-border outline-ring/50;
+    border-color: oklch(0.922 0 0);
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased;
+    background-color: oklch(1 0 0);
+    color: oklch(0.145 0 0);
   }
 
   h1, h2, h3, h4, h5, h6 {
