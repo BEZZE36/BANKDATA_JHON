@@ -167,10 +167,12 @@ const adminNavItems: NavItem[] = [
 ];
 
 function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
+  const { setOpenMobile, isMobile } = useSidebar();
+
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
-        render={<Link href={item.href} />}
+        render={<Link href={item.href} onClick={() => isMobile && setOpenMobile(false)} />}
         isActive={isActive}
         tooltip={item.label}
         size="default"

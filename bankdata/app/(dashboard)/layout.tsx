@@ -5,6 +5,7 @@ import {
   SidebarInset,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { cookies } from "next/headers";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -20,9 +21,11 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const user = await requireAuth();
+  const cookieStore = await cookies();
+  const defaultOpen = cookieStore.get("sidebar_state")?.value !== "false";
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={defaultOpen}>
       <Sidebar user={user} />
       <SidebarInset className="bg-slate-50 flex flex-col min-h-screen">
         {/* Topbar — shown only when sidebar is collapsed so user can re-open */}
