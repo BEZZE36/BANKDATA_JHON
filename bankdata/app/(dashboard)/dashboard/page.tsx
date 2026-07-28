@@ -109,9 +109,9 @@ export default async function DashboardPage() {
       <SidebarInset className="bg-slate-50 flex flex-col w-full">
         {/* Topbar */}
         <header className="sticky top-0 z-20 flex h-11 shrink-0 items-center gap-3 border-b border-slate-200 bg-white px-4">
-          <SidebarTrigger className="text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-md p-1.5 transition-colors" />
-          <div className="h-4 w-px bg-slate-200" />
-          <span className="text-xs font-medium text-slate-500">
+          <SidebarTrigger className="text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-md p-1.5 transition-colors shrink-0" />
+          <div className="h-4 w-px bg-slate-200 shrink-0" />
+          <span className="text-xs font-medium text-slate-500 truncate">
             BPKAD Provinsi Sulawesi Tengah
           </span>
         </header>
@@ -121,16 +121,16 @@ export default async function DashboardPage() {
             title="Dashboard"
             breadcrumbs={[{ label: 'Dashboard' }]}
           />
-          <div className="p-6 space-y-6">
+          <div className="p-4 sm:p-6 space-y-6">
             {/* Greeting */}
-            <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-6 text-white">
-              <div className="flex items-center justify-between">
+            <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-5 sm:p-6 text-white">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                   <p className="text-slate-400 text-sm">Selamat datang kembali,</p>
                   <h2 className="text-xl font-heading font-bold mt-0.5">{user.name}</h2>
                   <p className="text-slate-400 text-sm mt-1">{user.unit_kerja ?? user.role}</p>
                 </div>
-                <div className="text-right">
+                <div className="sm:text-right">
                   <p className="text-xs text-slate-500">{new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
                 </div>
               </div>

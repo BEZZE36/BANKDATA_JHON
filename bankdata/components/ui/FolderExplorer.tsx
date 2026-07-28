@@ -227,11 +227,11 @@ export default function FolderExplorer({ modul, canManage = false }: FolderExplo
   };
 
   return (
-    <div className="card p-6 mb-6">
-      <div className="flex justify-between items-center mb-4">
+    <div className="card p-4 sm:p-6 mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
         <h3 className="font-semibold text-slate-800">Manajemen Dokumen</h3>
         {canManage && (
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2 w-full sm:w-auto">
             <Button onClick={() => fileInputRef.current?.click()} className="py-1.5 px-3 text-sm bg-blue-600 hover:bg-blue-700" disabled={isUploading}>
               {isUploading ? 'Mengupload...' : '+ Upload File'}
             </Button>
@@ -252,7 +252,7 @@ export default function FolderExplorer({ modul, canManage = false }: FolderExplo
       {error && <Alert type="error" className="mb-4">{error}</Alert>}
 
       {showAddFolder && (
-        <form onSubmit={handleAddFolder} className="mb-6 flex gap-2 max-w-sm">
+        <form onSubmit={handleAddFolder} className="mb-6 flex flex-wrap gap-2 max-w-sm">
           <input
             type="text"
             value={newFolderName}
@@ -266,7 +266,7 @@ export default function FolderExplorer({ modul, canManage = false }: FolderExplo
         </form>
       )}
 
-      <div className="flex items-center gap-2 mb-4 text-sm font-medium text-slate-600 bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+      <div className="flex flex-wrap items-center gap-2 mb-4 text-sm font-medium text-slate-600 bg-slate-50 p-2.5 rounded-lg border border-slate-200">
         <button onClick={() => setCurrentFolder(null)} className="hover:text-emerald-600">
           Root Folder
         </button>
