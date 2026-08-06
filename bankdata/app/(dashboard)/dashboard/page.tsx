@@ -112,78 +112,60 @@ export default async function DashboardPage() {
   const defaultOpen = cookieStore.get("sidebar_state")?.value !== "false";
 
   return (
-    <SidebarProvider defaultOpen={defaultOpen}>
-      <Sidebar user={user} />
-      <SidebarInset className="bg-slate-50 flex flex-col w-full">
-        {/* Topbar */}
-        <header className="sticky top-0 z-20 flex h-11 shrink-0 items-center gap-3 border-b border-slate-200 bg-white px-4">
-          <SidebarTrigger className="text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-md p-1.5 transition-colors shrink-0" />
-          <div className="h-4 w-px bg-slate-200 shrink-0" />
-          <span className="text-xs font-medium text-slate-500 truncate">
-            BPKAD Provinsi Sulawesi Tengah
-          </span>
-        </header>
+    <>
+      {/* Topbar */}
+      <header className="sticky top-0 z-20 flex h-11 shrink-0 items-center gap-3 border-b border-slate-200 bg-white px-4">
+        <SidebarTrigger className="text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-md p-1.5 transition-colors shrink-0" />
+        <div className="h-4 w-px bg-slate-200 shrink-0" />
+        <span className="text-xs font-medium text-slate-500 truncate">
+          BPKAD Provinsi Sulawesi Tengah
+        </span>
+      </header>
 
-        <div>
-          <Header
-            title="Dashboard"
-            breadcrumbs={[{ label: 'Dashboard' }]}
-          />
-          <div className="p-4 sm:p-6 space-y-6">
-            {/* Greeting */}
-            <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-5 sm:p-6 text-white">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div>
-                  <p className="text-slate-400 text-sm">Selamat datang kembali,</p>
-                  <h2 className="text-xl font-heading font-bold mt-0.5">{user.name}</h2>
-                  <p className="text-slate-400 text-sm mt-1">{user.unit_kerja ?? user.role}</p>
-                </div>
-                <div className="sm:text-right">
-                  <p className="text-xs text-slate-500">{new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
-                </div>
+      <div>
+        <Header
+          title="Dashboard"
+          breadcrumbs={[{ label: 'Dashboard' }]}
+        />
+        <div className="p-4 sm:p-6 space-y-6">
+          {/* Greeting */}
+          <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-5 sm:p-6 text-white">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <p className="text-slate-400 text-sm">Selamat datang kembali,</p>
+                <h2 className="text-xl font-heading font-bold mt-0.5">{user.name}</h2>
+                <p className="text-slate-400 text-sm mt-1">{user.unit_kerja ?? user.role}</p>
+              </div>
+              <div className="sm:text-right">
+                <p className="text-xs text-slate-500">{new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
               </div>
             </div>
+          </div>
 
-            {/* Stat Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-              {statCards.map((card) => {
-                const s = stats[card.modul];
-                let mainNum = 0, subNum = 0, subLabel = '';
+          {/* Stat Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            {statCards.map((card) => {
+              const s = stats[card.modul];
+              let mainNum = 0, subNum = 0, subLabel = '';
 
-                if (card.modul === 'kepegawaian') {
-                  mainNum = (s as typeof stats.kepegawaian).total;
-                  subNum = (s as typeof stats.kepegawaian).aktif;
-                  subLabel = 'pegawai aktif';
-                } else if (card.modul === 'program') {
-                  mainNum = (s as typeof stats.program).total;
-                  subNum = (s as typeof stats.program).berjalan;
-                  subLabel = 'sedang berjalan';
-                } else if (card.modul === 'aset') {
-                  mainNum = (s as typeof stats.aset).total;
-                  subNum = (s as typeof stats.aset).rusak;
-                  subLabel = 'perlu perhatian';
-                } else {
-                  mainNum = 0;
-                  subNum = 0;
-                }
+              if (card.modul === 'kepegawaian') {
+                mainNum = (s as typeof stats.kepegawaian).total;
+                subNum = (s as typeof stats.kepegawaian).aktif;
+                subLabel = 'pegawai aktif';
+              } else if (card.modul === 'program') {
+                mainNum = (s as typeof stats.program).total;
+                subNum = (s as typeof stats.program).berjalan;
+                subLabel = 'sedang berjalan';
+              } else if (card.modul === 'aset') {
+                mainNum = (s as typeof stats.aset).total;
+                subNum = (s as typeof stats.aset).rusak;
+                subLabel = 'perlu perhatian';
+              } else {
+                mainNum = 0;
+                subNum = 0;
+              }
 
-                if (card.modul === 'keuangan') {
-                  return (
-                    <Link
-                      key={card.modul}
-                      href={card.href}
-                      className={`bg-gradient-to-br ${card.color} rounded-2xl p-5 text-white hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 group`}
-                    >
-                      <div className={`w-10 h-10 ${card.iconBg} rounded-xl flex items-center justify-center mb-4`}>
-                        {card.icon}
-                      </div>
-                      <p className="text-white/70 text-xs mb-1">{card.label}</p>
-                      <p className="text-lg font-bold leading-tight">{formatRupiah(stats.keuangan.totalRealisasi)}</p>
-                      <p className="text-white/60 text-xs mt-1">realisasi • {persen}% capaian</p>
-                    </Link>
-                  );
-                }
-
+              if (card.modul === 'keuangan') {
                 return (
                   <Link
                     key={card.modul}
@@ -194,44 +176,59 @@ export default async function DashboardPage() {
                       {card.icon}
                     </div>
                     <p className="text-white/70 text-xs mb-1">{card.label}</p>
-                    <p className="text-3xl font-bold">{mainNum.toLocaleString('id-ID')}</p>
-                    <p className="text-white/60 text-xs mt-1">{subNum} {subLabel}</p>
+                    <p className="text-lg font-bold leading-tight">{formatRupiah(stats.keuangan.totalRealisasi)}</p>
+                    <p className="text-white/60 text-xs mt-1">realisasi • {persen}% capaian</p>
                   </Link>
                 );
-              })}
-            </div>
+              }
 
-            {/* Ringkasan Keuangan */}
-            <div className="card p-6">
-              <h3 className="font-heading font-semibold text-slate-800 mb-4">Ringkasan Anggaran</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div>
-                  <p className="text-xs text-slate-500 mb-1">Total Anggaran</p>
-                  <p className="text-xl font-bold text-slate-800">{formatRupiah(stats.keuangan.totalAnggaran)}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-slate-500 mb-1">Total Realisasi</p>
-                  <p className="text-xl font-bold text-emerald-600">{formatRupiah(stats.keuangan.totalRealisasi)}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-slate-500 mb-1">Persentase Capaian</p>
-                  <p className="text-xl font-bold text-slate-800">{persen}%</p>
-                </div>
+              return (
+                <Link
+                  key={card.modul}
+                  href={card.href}
+                  className={`bg-gradient-to-br ${card.color} rounded-2xl p-5 text-white hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 group`}
+                >
+                  <div className={`w-10 h-10 ${card.iconBg} rounded-xl flex items-center justify-center mb-4`}>
+                    {card.icon}
+                  </div>
+                  <p className="text-white/70 text-xs mb-1">{card.label}</p>
+                  <p className="text-3xl font-bold">{mainNum.toLocaleString('id-ID')}</p>
+                  <p className="text-white/60 text-xs mt-1">{subNum} {subLabel}</p>
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Ringkasan Keuangan */}
+          <div className="card p-6">
+            <h3 className="font-heading font-semibold text-slate-800 mb-4">Ringkasan Anggaran</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <p className="text-xs text-slate-500 mb-1">Total Anggaran</p>
+                <p className="text-xl font-bold text-slate-800">{formatRupiah(stats.keuangan.totalAnggaran)}</p>
               </div>
-              <div className="mt-4">
-                <div className="w-full bg-slate-100 rounded-full h-3">
-                  <div
-                    className={`h-3 rounded-full transition-all duration-700 ${
-                      persen >= 90 ? 'bg-emerald-500' : persen >= 60 ? 'bg-blue-500' : persen >= 30 ? 'bg-yellow-500' : 'bg-red-500'
-                    }`}
-                    style={{ width: `${Math.min(persen, 100)}%` }}
-                  />
-                </div>
+              <div>
+                <p className="text-xs text-slate-500 mb-1">Total Realisasi</p>
+                <p className="text-xl font-bold text-emerald-600">{formatRupiah(stats.keuangan.totalRealisasi)}</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500 mb-1">Persentase Capaian</p>
+                <p className="text-xl font-bold text-slate-800">{persen}%</p>
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className="w-full bg-slate-100 rounded-full h-3">
+                <div
+                  className={`h-3 rounded-full transition-all duration-700 ${
+                    persen >= 90 ? 'bg-emerald-500' : persen >= 60 ? 'bg-blue-500' : persen >= 30 ? 'bg-yellow-500' : 'bg-red-500'
+                  }`}
+                  style={{ width: `${Math.min(persen, 100)}%` }}
+                />
               </div>
             </div>
           </div>
         </div>
-      </SidebarInset>
-    </SidebarProvider>
+      </div>
+    </>
   );
 }
