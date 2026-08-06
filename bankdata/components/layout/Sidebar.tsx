@@ -246,6 +246,15 @@ export default function Sidebar({ user }: SidebarProps) {
       ? pathname === "/dashboard"
       : pathname.startsWith(href);
 
+  const filteredNavItems = navItems.filter((item) => {
+    if (isAdmin) return true;
+    if (user.role === "operator-kepegawaian" && item.href === "/pegawai") return true;
+    if (user.role === "operator-keuangan" && item.href === "/keuangan") return true;
+    if (user.role === "operator-program" && item.href === "/program") return true;
+    if (user.role === "operator-aset" && item.href === "/aset") return true;
+    return false;
+  });
+
   return (
     <ShadcnSidebar collapsible="icon">
       {/* Header */}
@@ -262,7 +271,7 @@ export default function Sidebar({ user }: SidebarProps) {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="gap-0.5">
-              {navItems.map((item) => (
+              {filteredNavItems.map((item) => (
                 <NavLink
                   key={item.href}
                   item={item}

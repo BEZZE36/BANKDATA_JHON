@@ -64,7 +64,19 @@ function LoginContent() {
     // Catat log login
     await fetch("/api/auth/log-login", { method: "POST" }).catch(() => {});
 
-    router.push("/dashboard");
+    const role = user?.user_metadata?.["role"];
+    if (role === "operator-kepegawaian") {
+      router.push("/pegawai");
+    } else if (role === "operator-keuangan") {
+      router.push("/keuangan");
+    } else if (role === "operator-program") {
+      router.push("/program");
+    } else if (role === "operator-aset") {
+      router.push("/aset");
+    } else {
+      router.push("/dashboard");
+    }
+    
     router.refresh();
   }
 

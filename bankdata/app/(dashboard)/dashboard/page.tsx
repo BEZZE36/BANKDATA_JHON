@@ -7,6 +7,7 @@ import type { Metadata } from 'next';
 import Sidebar from '@/components/layout/Sidebar';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = { title: 'Dashboard' };
 
@@ -94,7 +95,14 @@ const statCards = [
 ];
 
 export default async function DashboardPage() {
-  const [user, stats] = await Promise.all([requireAuth(), getDashboardStats()]);
+  const user = await requireAuth();
+
+  if (user.role === 'operator-kepegawaian') redirect('/pegawai');
+  if (user.role === 'operator-keuangan') redirect('/keuangan');
+  if (user.role === 'operator-program') redirect('/program');
+  if (user.role === 'operator-aset') redirect('/aset');
+
+  const stats = await getDashboardStats();
 
   const persen = stats.keuangan.totalAnggaran > 0
     ? Math.round((stats.keuangan.totalRealisasi / stats.keuangan.totalAnggaran) * 100)
